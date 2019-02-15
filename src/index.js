@@ -1,4 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
+  const high808 = document.getElementById('high808')
+  const low808 = document.getElementById('low808')
+  const slowHiHat = document.getElementById('slow-hihat')
+  const fastHiHat = document.getElementById('fast-hihat')
+  const kickElement = document.getElementById('kick')
+  const snareElement = document.getElementById('snare')
+
   /*
     808 BASS
   */
@@ -51,8 +58,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   })
 
-  const hihatCallback = () => hihat.triggerAttackRelease(ratios, '16n')
-  const fastHihatCallback = () => hihat.triggerAttackRelease(ratios, '32n')
+  const hihatCallback = () => {
+    slowHiHat.style.border = '5px solid #62b233'
+    hihat.triggerAttackRelease(ratios, '16n')
+    setTimeout(() => {
+      slowHiHat.style.border = 'none'
+    }, 50)
+  }
+  const fastHihatCallback = () => {
+    fastHiHat.style.border = '5px solid #62b233'
+    hihat.triggerAttackRelease(ratios, '32n')
+    setTimeout(() => {
+      fastHiHat.style.border = 'none'
+    }, 50)
+  }
   const hihatLoop = new Tone.Loop(hihatCallback, '8n')
   const fastHihatLoop = new Tone.Loop(fastHihatCallback, '16n')
 
@@ -130,9 +149,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (event.key === 'a') {
       bass808.triggerAttackRelease('C1', '1n')
       kick.triggerAttackRelease('C1', '8n')
+      low808.style.border = '5px solid #62b233'
     } else if (event.key === 's') {
       bass808.triggerAttackRelease('C2', '1n')
       kick.triggerAttackRelease('C1', '8n')
+      high808.style.border = '5px solid #62b233'
     } else if (event.key === 'd') {
       if (hihatLoop.state === 'stopped') {
         Tone.Transport.start()
@@ -142,6 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
         Tone.Transport.stop()
         hihatLoop.stop()
       }
+      slowHiHat.style.border = '5px solid #62b233'
     } else if (event.key === 'c') {
       if (fastHihatLoop.state === 'stopped') {
         Tone.Transport.start()
@@ -151,11 +173,30 @@ document.addEventListener('DOMContentLoaded', () => {
         Tone.Transport.stop()
         fastHihatLoop.stop()
       }
+      fastHiHat.style.border = '5px solid #62b233'
     } else if (event.key === 'x') {
+      snareElement.style.border = '5px solid #62b233'
       noise.triggerAttack()
       snare.triggerAttackRelease(['Eb3', 'G4', 'C5'], '16n')
     } else if (event.key === 'z') {
       kick.triggerAttackRelease('C1', '8n')
+      kickElement.style.border = '5px solid #62b233'
+    }
+  })
+
+  document.addEventListener('keyup', event => {
+    if (event.key === 'a') {
+      low808.style.border = 'none'
+    } else if (event.key === 's') {
+      high808.style.border = 'none'
+    } else if (event.key === 'd') {
+      slowHiHat.style.border = 'none'
+    } else if (event.key === 'c') {
+      fastHiHat.style.border = 'none'
+    } else if (event.key === 'x') {
+      snareElement.style.border = 'none'
+    } else if (event.key === 'z') {
+      kickElement.style.border = 'none'
     }
   })
 })
